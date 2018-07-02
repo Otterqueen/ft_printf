@@ -85,7 +85,6 @@ char	*get_size(char *attribu, t_printf *print)
 	size = NULL;
 	if (ft_strchr("hljz", *attribu) != NULL)
 	{
-		//size = ft_strnew(1);
 		size = ft_strjoin_bis(size, attribu);
 		attribu++;
 		if (ft_strchr("hl", *attribu) != NULL)

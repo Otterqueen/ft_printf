@@ -89,8 +89,9 @@ int		main(void)
 	printf("test : {% 03d}\n", 0);*/
 	ft_printf("moi  : %.d %.0d\n", 42, 43);
 	printf("test : %.d %.0d\n", 42, 43);
-
-	/*ft_printf("moi  : %c\n", 42);
+	/*ft_printf("moi  : % Zoooo\n");
+	printf("test : % Zoooo\n");
+	ft_printf("moi  : %c\n", 42);
 	printf("test : %c\n", 42);*/
 	
 

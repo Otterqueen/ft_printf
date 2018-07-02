@@ -16,8 +16,6 @@
 char		*process_o(t_printf *print, va_list param)
 {
 	long	next_value;
-	char	*str;
-	int		len;
 
 	next_value = va_arg(param, long);
 	if (print->size != NULL)
@@ -45,15 +43,7 @@ char		*process_o(t_printf *print, va_list param)
 		else
 			next_value = (unsigned int)next_value;
 	}
-	str = ft_itoa_base_l(next_value, 8);
-	if ((print->diese == 1) && (next_value != 0))
-		str = ft_strjoin("0", str);
-	len = ft_strlen(str);
-	if (!((print->preci == 0) && (print->diese == 1)))
-		str = ft_preci(print, str, len);
-	len = ft_strlen(str);
-	str = ft_process_flag_2(print, str, len);
-	return (str);
+	return(process_o_bis(print, next_value));
 }
 
 char		*process_x(t_printf *print, va_list param)
@@ -112,22 +102,8 @@ char		*process_p(t_printf *print, va_list param)
 	long	next_value;
 	char	*str;
 	int		len;
-	//char	*nb;
 
 	next_value = va_arg(param, long);
-	//nb = ft_itoa_base(next_value, 16);
-	//str = ft_strjoin("0x", nb);
-	//free(nb);
-	/*str = ft_strjoin("0x", ft_itoa_base(next_value, 16));
-	len = ft_strlen(str);
-	str = ft_process_flag(print, str, len);
-	str = ft_itoa_base_l(next_value, 16);
-	len = ft_strlen(str);
-	len = len + 2;
-	str = flag_x(print, str, len);
-	len = ft_strlen(str);
-	str = ft_process_flag(print, str, len);
-	str = ft_strjoin("0x", str);*/
 	if (print->preci == 0)
 	{
 		str = ft_strdup("0x");

@@ -42,7 +42,7 @@ t_printf		*init(t_printf *old)
 	old->plus = -1;
 	old->width = -1;
 	old->preci = -1;
-	if (old->size != NULL) 
+	if (old->size != NULL)
 		free(old->size);
 	old->size = NULL;
 	old->type = -1;
@@ -108,9 +108,10 @@ char			*ft_preci(t_printf *print, char *str, int len)
 	if (!((print->type == 'o') || (print->type == 'O') || (print->type == 'x') \
 							|| (print->type == 'X')))
 		len = ft_len_int(ft_atoi(str));
-	if(print->preci == 0)
+	if (print->preci == 0)
 	{
-		if ((print->type == 'd') || (print->type == 'i') || (print->type == 'D'))
+		if ((print->type == 'd') || (print->type == 'i') || \
+									(print->type == 'D'))
 		{
 			if (ft_strstr("0", str) != NULL)
 				return (ft_strnew(1));

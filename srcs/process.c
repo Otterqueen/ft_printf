@@ -18,31 +18,24 @@ char		*process_s(t_printf *print, va_list param)
 	char	*next_value;
 	int		len;
 
-	/*if (ft_strchr("S", print->type) != NULL)
+	next_value = va_arg(param, char *);
+	if (next_value == NULL)
 	{
-		next_value = process_ss(print, param);
+		if ((print->preci >= 0) || (print->width > 0))
+			next_value = ft_strnew(1);
+		else
+			return (ft_strdup("(null)"));
 	}
-	else
-	{*/
-		next_value = va_arg(param, char *);
-		if (next_value == NULL)
+	len = ft_strlen(next_value);
+	if (print->preci >= 0)
+	{
+		if (len > print->preci)
 		{
-			if ((print->preci >= 0) || (print->width > 0))
-				next_value = ft_strnew(1);
-			else
-				return (ft_strdup("(null)"));
+			next_value = ft_strcut(next_value, print->preci);
 		}
-		len = ft_strlen(next_value);
-		if (print->preci >= 0)
-		{
-			if (len > print->preci)
-			{
-				next_value = ft_strcut(next_value, print->preci);
-			}
-		}
-		len = ft_strlen(next_value);
-		next_value = ft_process_flag_2(print, next_value, len);
-	//}
+	}
+	len = ft_strlen(next_value);
+	next_value = ft_process_flag_2(print, next_value, len);
 	return (next_value);
 }
 
@@ -58,24 +51,13 @@ char		*process_c(t_printf *print, va_list param)
 		if (ft_strstr(print->size, "l"))
 			print->type = 'C';
 	}
+	next_value = va_arg(param, int);
+	if (next_value == 0)
+		print->char0 = 1;
 	if (ft_strchr("C", print->type) != NULL)
-	{
-		next_value = va_arg(param, int);
-		if (next_value == 0)
-		{
-			print->char0 = 1;
-		}
 		ret = handle_wchar(ret, next_value);
-	}
 	else
-	{
-		next_value = va_arg(param, int);
-		if (next_value == 0)
-		{
-			print->char0 = 1;
-		}
 		ret = ft_strjoinchar(ret, next_value);
-	}
 	len = ft_strlen(ret);
 	if (next_value == 0)
 		len = len + 1;
@@ -107,12 +89,12 @@ char		*process_d(t_printf *print, va_list param)
 	}
 	else
 		next_value = (int)next_value;
-	len = ft_intlen_l(next_value);
 	if ((next_value < 0) && (next_value != -2147483648))
 	{
 		next_value = -next_value;
 		neg = 1;
 	}
+	len = ft_intlen_l(next_value);
 	str = ft_itoa_l(next_value);
 	str = ft_preci(print, str, len);
 	len = ft_strlen(str);
@@ -134,10 +116,7 @@ char		*process_d(t_printf *print, va_list param)
 			str = ft_strjoin("+", str);
 	}
 	else if ((print->space == 1) && (neg == 0) && (print->plus == -1)) 
-	{
-		//if (print->end[strlen(print->end) - 1] != ' ')
-			str = ft_strjoin(" ", str);
-	}
+		str = ft_strjoin(" ", str);
 	return (str);
 }
 

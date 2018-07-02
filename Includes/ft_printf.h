@@ -40,7 +40,7 @@ typedef struct	s_printf
 int				ft_printf(const char *format, ...);
 int				process(char *format, t_printf *print, va_list params);
 char			*parse(char *format, t_printf *print);
-char			*traitement(t_printf *print, va_list params);
+char			*traitement(t_printf *print, va_list params, char *attribut);
 t_printf		*new_struct();
 char			*process_s(t_printf *print, va_list param);
 char			*get_flag(char *attribu, t_printf *print);
@@ -65,5 +65,9 @@ char			*ft_preci(t_printf *print, char *str, int len);
 char			*flag_x(t_printf *print, char *str, int len);
 char			*flag_p(t_printf *print, char *str, int len);
 void			ft_free_print(t_printf *print);
+char			*process_other(t_printf *print, va_list param, char *attribut);
 char			*handle_wchar(char *str, wchar_t wc);
+char			*process_o_bis(t_printf *print, long next_value);
+t_printf		*handle_nullc(t_printf *print);
+char			*process_d_bis(t_printf *print, long long next_value, char *str, int neg);
 #endif

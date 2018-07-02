@@ -40,16 +40,6 @@ char	*flag_x(t_printf *print, char *str, int len)
 
 char	*flag_p(t_printf *print, char *str, int len)
 {
-	/*if (print->diese == 1)
-		len = len - 2;
-	while ((print->preci - len) > 0)
-	{
-		str = ft_strjoin("0", str);
-		print->preci--;
-	}
-	if (print->diese == 1)
-		str = ft_strjoin("0x", str);
-	return (str);*/
 	if ((print->zero == 1) && (print->preci == -1) && (print->minus == -1))
 		while ((print->width - len) > 0)
 		{
@@ -79,7 +69,7 @@ void	ft_free_print(t_printf *print)
 	free(print);
 }
 
-char 	*handle_wchar(char *str, wchar_t wc)
+char	*handle_wchar(char *str, wchar_t wc)
 {
 	if (wc <= 127)
 		str = ft_strjoinchar(str, wc);
@@ -101,27 +91,20 @@ char 	*handle_wchar(char *str, wchar_t wc)
 		str = ft_strjoinchar(str, (((wc >> 6) & 0x3F) + 0x80));
 		str = ft_strjoinchar(str, ((wc & 0x3F) + 0x80));
 	}
-	return(str);
+	return (str);
 }
 
-char		*process_ss(t_printf *print, va_list param)
+char	*process_other(t_printf *print, va_list param, char *attribut)
 {
-	wchar_t		*next_value;
-	char		*str;
+	char *str;
 
-	next_value = va_arg(param, wchar_t *);
-	while (next_value != '\0')
+	if (print->type == '%')
+		str = process_pe(print);
+	else
 	{
-		str = handle_wchar(str, *next_value);
-		if (*next_value <= 127)
-			next_value++;
-		else if (*next_value <= 2047)
-			next_value = next_value + 2;
-		else if (*next_value <= 65535)
-			next_value = next_value + 3;
-		else if (*next_value <= 1114111)
-			next_value = next_value + 4;
-		//next_value++;
+		if (attribut[0] == ' ')
+			attribut++;
+		str = attribut;
 	}
 	return (str);
 }

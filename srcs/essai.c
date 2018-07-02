@@ -41,26 +41,12 @@ int		process(char *format, t_printf *print, va_list params)
 		if (*format == '%')
 		{
 			format++;
-			/*if (ft_strchr("sSpdDoiOuUxXcCb%", *format) == NULL)
-            {
-            	if (*format == ' ')
-                    format++;
-            }*/
 			print = init(print);
 			attribut = parse(format, print);
-			str = traitement(print, params);
-			if (str == NULL)
-				return (-1);
+			str = traitement(print, params, attribut);
 			print->end = ft_strjoin(print->end, str);
 			if (print->char0 == 1)
-			{
-				print->nbprint = ft_strlen(print->end) + 1;
-				write(1, print->end, ft_strlen(print->end));
-				write(1, "\0", 1);
-				print = init(print);
-				free(print->end);
-				print->end = ft_strnew(1);
-			}
+				print = handle_nullc(print);
 			format = format + ft_strlen(attribut);
 			//free(str);
 			free(attribut);
@@ -98,20 +84,10 @@ char	*parse(char *format, t_printf *print)
 		attribut = ft_strnew(1);
 		//return(NULL);
 	}
-	/*printf("diese = %i\n", print->diese);
-	printf("minus = %i\n", print->minus);
-	printf("zero = %i\n", print->zero);
-	printf("space = %i\n", print->space);
-	printf("plus = %i\n", print->plus);
-	printf("width = %i\n", print->width);
-	printf("preci = %i\n", print->preci);
-	printf("size = %s\n", print->size);
-	printf("type = %c\n", print->type);
-	printf("end = %s\n", print->end);*/
 	return (attribut);
 }
 
-char	*traitement(t_printf *print, va_list params)
+char	*traitement(t_printf *print, va_list params, char *attribut)
 {
 	char *str;
 
@@ -121,8 +97,6 @@ char	*traitement(t_printf *print, va_list params)
 		str = process_c(print, params);
 	else if ((print->type == 'd') || (print->type == 'i'))
 		str = process_d(print, params);
-	else if (print->type == '%')
-		str = process_pe(print);
 	else if ((print->type == 'u') || (print->type == 'U'))
 		str = process_u(print, params);
 	else if (print->type == 'D')
@@ -135,5 +109,7 @@ char	*traitement(t_printf *print, va_list params)
 		str = process_p(print, params);
 	else if (print->type == 'b')
 		str = process_b(print, params);
+	else
+		str = process_other(print, params, attribut);
 	return (str);
 }
