@@ -69,10 +69,8 @@ char		*process_d(t_printf *print, va_list param)
 {
 	long long	next_value;
 	char		*str;
-	int			len;
 	int			neg;
 
-	neg = 0;
 	next_value = va_arg(param, long long);
 	if (print->size != NULL)
 	{
@@ -89,34 +87,9 @@ char		*process_d(t_printf *print, va_list param)
 	}
 	else
 		next_value = (int)next_value;
-	if ((next_value < 0) && (next_value != -2147483648))
-	{
-		next_value = -next_value;
-		neg = 1;
-	}
-	len = ft_intlen_l(next_value);
-	str = ft_itoa_l(next_value);
-	str = ft_preci(print, str, len);
-	len = ft_strlen(str);
-	if ((neg == 1) || (print->space == 1) || (print->plus == 1))
-		len++;
-	if ((neg == 1) && (print->zero == -1))
-		str = ft_strjoin("-", str);
-	if ((print->plus == 1) && (next_value != -2147483648) && (print->zero == -1))
-	{
-		if (neg == 0)
-			str = ft_strjoin("+", str);
-	}
-	str = ft_process_flag_2(print, str, len);
-	if ((neg == 1) && (print->zero != -1))
-		str = ft_strjoin("-", str);
-	if ((print->plus == 1) && (next_value != -2147483648) && (print->zero != -1))
-	{
-		if (neg == 0)
-			str = ft_strjoin("+", str);
-	}
-	else if ((print->space == 1) && (neg == 0) && (print->plus == -1)) 
-		str = ft_strjoin(" ", str);
+	neg = is_neg(neg, &next_value);
+	str = process_d_bis(print, next_value, str, neg);
+	str = process_d_ter(print, next_value, str, neg);
 	return (str);
 }
 
@@ -124,7 +97,6 @@ char		*process_u(t_printf *print, va_list param)
 {
 	unsigned long	next_value;
 	char			*str;
-	int				len;
 
 	next_value = va_arg(param, unsigned long);
 	if ((print->size != NULL) && (ft_strchr("U", print->type) == NULL))
@@ -132,12 +104,7 @@ char		*process_u(t_printf *print, va_list param)
 		if (ft_strstr(print->size, "h"))
 			next_value = (unsigned short int)next_value;
 		if (ft_strstr(print->size, "hh"))
-		{
-			if(next_value == USHRT_MAX)
-				next_value = 65535;
-			else
-				next_value = (unsigned char)next_value;
-		}
+			next_value = is_max(next_value);
 		if (ft_strstr(print->size, "l"))
 			next_value = (unsigned long int)next_value;
 		if (ft_strstr(print->size, "j"))
@@ -146,17 +113,10 @@ char		*process_u(t_printf *print, va_list param)
 			next_value = (size_t)next_value;
 	}
 	else
-	{
-		if (ft_strchr("U", print->type) != NULL)
-			next_value = (long unsigned int)next_value;
-		else
-			next_value = (unsigned int)next_value;
-	}
-	str = ft_itoa_u(next_value);
-	len = ft_strlen(str);
-	str = ft_preci(print, str, len);
-	len = ft_strlen(str);
-	str = ft_process_flag_2(print, str, len);
+		(ft_strchr("U", print->type) != NULL) ? next_value = \
+				((long unsigned int)next_value) : \
+					(next_value = (unsigned int)next_value);
+	str = process_u_bis(print, next_value, str);
 	return (str);
 }
 

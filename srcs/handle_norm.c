@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   handle_norm.c                                    .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: mchapard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
+/*   By: mchapard <mchapard@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/06/28 16:33:46 by mchapard     #+#   ##    ##    #+#       */
-/*   Updated: 2018/06/28 16:33:49 by mchapard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/07/03 10:11:33 by mchapard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,22 +40,49 @@ t_printf	*handle_nullc(t_printf *print)
 	return (print);
 }
 
-/*char		*process_d_bis(t_printf *print, long long next_value, char *str, int neg)
+char		*process_d_bis(t_printf *print, long long n_v, char *str, int neg)
 {
-	int		len;
+	int len;
 
-	len = ft_intlen_l(next_value);
-	str = ft_itoa_l(next_value);
+	len = ft_intlen_l(n_v);
+	str = ft_itoa_l(n_v);
 	str = ft_preci(print, str, len);
 	len = ft_strlen(str);
 	if ((neg == 1) || (print->space == 1) || (print->plus == 1))
 		len++;
 	if ((neg == 1) && (print->zero == -1))
 		str = ft_strjoin("-", str);
-	if ((print->plus == 1) && (next_value != -2147483648) && (print->zero == -1))
+	if ((print->plus == 1) && (n_v != -2147483648) && (print->zero == -1))
 	{
 		if (neg == 0)
 			str = ft_strjoin("+", str);
 	}
+	str = ft_process_flag_2(print, str, len);
+	if ((neg == 1) && (print->zero != -1))
+		str = ft_strjoin("-", str);
 	return (str);
-}*/
+}
+
+char		*process_d_ter(t_printf *print, long long n_v, char *str, int neg)
+{
+	if ((print->plus == 1) && (n_v != -2147483648) && (print->zero != -1))
+	{
+		if (neg == 0)
+			str = ft_strjoin("+", str);
+	}
+	else if ((print->space == 1) && (neg == 0) && (print->plus == -1))
+		str = ft_strjoin(" ", str);
+	return (str);
+}
+
+int			is_neg(int neg, long long *next_value)
+{
+	if ((*next_value < 0) && (*next_value != -2147483648))
+	{
+		*next_value = -(*next_value);
+		neg = 1;
+	}
+	else
+		neg = 0;
+	return (neg);
+}

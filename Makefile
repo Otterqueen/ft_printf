@@ -33,7 +33,8 @@ SRC_NAME =	essai.c \
 			process_bis.c \
 			fix.c \
 			handle_unistr.c \
-			handle_norm.c
+			handle_norm.c \
+			handle_norme2.c
 
 LIB_NAME = 	 ft_isalpha.c   ft_memcpy.c    ft_putnbr.c    ft_strcat.c    ft_strjoin.c \
 	  ft_strncpy.c  ft_tolower.c  ft_isascii.c  ft_memset.c   ft_putnbr_fd.c \

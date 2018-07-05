@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   process_bis.c                                    .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: mchapard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
+/*   By: mchapard <mchapard@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/05/15 14:27:54 by mchapard     #+#   ##    ##    #+#       */
-/*   Updated: 2018/05/15 14:27:56 by mchapard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/07/03 19:32:22 by mchapard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,12 +23,7 @@ char		*process_o(t_printf *print, va_list param)
 		if (ft_strstr(print->size, "h"))
 			next_value = (unsigned short int)next_value;
 		if (ft_strstr(print->size, "hh"))
-		{
-			if(next_value == USHRT_MAX)
-				next_value = 65535;
-			else
-				next_value = (unsigned char)next_value;
-		}
+			next_value = is_max(next_value);
 		if (ft_strstr(print->size, "l"))
 			next_value = (unsigned long int)next_value;
 		if (ft_strstr(print->size, "j"))
@@ -43,14 +38,13 @@ char		*process_o(t_printf *print, va_list param)
 		else
 			next_value = (unsigned int)next_value;
 	}
-	return(process_o_bis(print, next_value));
+	return (process_o_bis(print, next_value));
 }
 
 char		*process_x(t_printf *print, va_list param)
 {
 	long	next_value;
 	char	*str;
-	int		len;
 
 	next_value = va_arg(param, long long);
 	if (print->size != NULL)
@@ -70,30 +64,7 @@ char		*process_x(t_printf *print, va_list param)
 	}
 	else
 		next_value = (unsigned int)next_value;
-	if (next_value > 4294967295)
-		str = ft_strdup("100000000");
-	if (next_value > 9223372036854775806)
-		str = ft_strdup("7fffffffffffffff");
-	if (print->preci == 0)
-	{
-		str = ft_strnew(1);
-		if (print->width)
-			while ((print->width) > 0)
-			{
-				str = ft_strjoin(" ", str);
-				print->width--;
-			}
-		return (str);
-	}
-	if (next_value == 0)
-		return (ft_strdup("0"));
-	str = ft_itoa_base_l(next_value, 16);
-	len = ft_strlen(str);
-	if (print->diese == 1)
-		len = len + 2;
-	str = flag_x(print, str, len);
-	len = ft_strlen(str);
-	str = ft_process_flag(print, str, len);
+	str = is_overflow(print, next_value, str);
 	return (str);
 }
 

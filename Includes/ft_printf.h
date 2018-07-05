@@ -3,10 +3,10 @@
 /*                                                              /             */
 /*   ft_printf.h                                      .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: mchapard <marvin@le-101.fr>                +:+   +:    +:    +:+     */
+/*   By: mchapard <mchapard@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/03/20 14:06:46 by mchapard     #+#   ##    ##    #+#       */
-/*   Updated: 2018/04/10 09:33:41 by mchapard    ###    #+. /#+    ###.fr     */
+/*   Updated: 2018/07/03 19:32:52 by mchapard    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -69,5 +69,12 @@ char			*process_other(t_printf *print, va_list param, char *attribut);
 char			*handle_wchar(char *str, wchar_t wc);
 char			*process_o_bis(t_printf *print, long next_value);
 t_printf		*handle_nullc(t_printf *print);
-char			*process_d_bis(t_printf *print, long long next_value, char *str, int neg);
+char			*process_d_bis(t_printf *print, long long nv, char *str, int n);
+int				is_neg(int neg, long long *next_value);
+char			*process_d_ter(t_printf *print, long long nv, char *str, int n);
+unsigned char	is_max(unsigned long next_value);
+char			*process_u_bis(t_printf *print, unsigned long n_v, char *str);
+char			*preci_null(t_printf *print, char *str);
+char			*process_x_bis(t_printf *print, unsigned long n_v, char *str);
+char			*is_overflow(t_printf *print, unsigned long n_v, char *str);
 #endif
